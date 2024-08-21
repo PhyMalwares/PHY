@@ -472,22 +472,17 @@ bool copyToStartupFolder() {
     if (SHGetSpecialFolderPathW(NULL, startupFolderPath, CSIDL_COMMON_STARTUP, FALSE)) {
         WCHAR buffer[MAX_PATH];
         if (GetModuleFileNameW(NULL, buffer, MAX_PATH)) {
-            // 복사 대상 파일 경로
             LPCWSTR sourcePath = buffer;
 
-            // 대상 폴더 경로
             std::wstring destinationFolder = startupFolderPath;
 
-            // 복사할 파일의 이름
             std::wstring fileName = L"\\";
             fileName += sourcePath;
             size_t pos = fileName.rfind(L"\\");
             fileName = fileName.substr(pos + 1);
 
-            // 복사할 파일의 전체 경로
             std::wstring destinationPath = destinationFolder + L"\\" + fileName;
 
-            // 파일 복사
             if (CopyFileW(sourcePath, destinationPath.c_str(), FALSE)) {
                 std::wcout << L"File copied to startup folder: " << destinationPath << std::endl;
                 return true;
